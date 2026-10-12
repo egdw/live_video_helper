@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>课程自动播放 · 管理后台</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body class="admin-body">
+  <header class="topbar"><div class="brand"><div class="brand-logo">▶</div><div><strong>课程自动播放</strong><small>腾讯会议共享播放控制台</small></div></div>
+    <div class="top-actions"><span id="serviceTime" class="muted"></span><a class="btn btn-main" href="/player" target="_blank">打开播放页面 ↗</a></div></header>
+  <main class="container">
+    <section class="hero"><div><div class="eyebrow">LOCAL VIDEO SCHEDULER</div><h1>4天课程，一次排好，到点自动播放</h1><p>后台负责编排视频；腾讯会议只需共享单独的播放窗口。不在课程时段，播放页显示“直播暂停”。</p></div><div id="liveStatus" class="hero-status">等待播放器连接</div></section>
+    <section class="quick-cards">
+      <div class="stat"><span>视频库</span><strong id="videosCount">0</strong><small>个已导入的视频</small></div>
+      <div class="stat"><span>已建立场次</span><strong id="sessionsCount">0</strong><small>上午/下午独立编排</small></div>
+      <div class="stat"><span>待识别时长</span><strong id="unknownCount">0</strong><small>建议全部识别后开播</small></div>
+      <div class="stat"><span>播放器心跳</span><strong id="heartbeatStatus">未连接</strong><small>建议始终保持播放器开启</small></div>
+    </section>
+    <section class="card block">
+      <div class="section-heading"><div><h2>① 创建4天课程表</h2><p>日期和上课时间可以修改；生成时不会覆盖已经安排好的场次。</p></div></div>
+      <form id="generateForm" class="controls">
+        <label>开始日期<input id="startDay" type="date" required /></label>
+        <label>连续天数<input id="days" type="number" value="4" min="1" max="30" /></label>
+        <label>上午开始<input id="amStart" type="time" value="08:30" required /></label>
+        <label>上午结束<input id="amEnd" type="time" value="12:30" required /></label>
+        <label>下午开始<input id="pmStart" type="time" value="13:30" required /></label>
+        <label>下午结束<input id="pmEnd" type="time" value="17:30" required /></label>
+        <button class="btn btn-main" type="submit">生成课程表</button>
+      </form>
+    </section>
+    <div class="work-columns">
+      <section class="card block library">
+        <div class="section-heading"><div><h2>② 导入视频</h2><p>支持MP4/WebM；MOV/MKV取决于浏览器解码能力。</p></div></div>
+        <div class="soft-block">
+          <label class="field">本机文件夹路径 <span class="muted">例如 D:\TrainingLive</span>
+            <input id="folderPath" type="text" placeholder="D:\TrainingLive" autocomplete="off" />
+          </label>
+          <div class="button-row"><button id="importFolder" class="btn btn-secondary" type="button">扫描并导入文件夹</button><button id="autoAssign" class="btn btn-ghost" type="button">按Day01/AM目录自动排课</button></div>
+          <p class="hint">本机文件夹导入不会复制大型视频，直接引用原文件；文件不要中途移动。</p>
+        </div>
+        <div id="dropZone" class="dropzone" tabindex="0" role="button"><span class="dropicon">⇧</span><strong>拖拽视频到这里，或点击选择上传</strong><small>上传到本地服务，不上传到公网。大量视频建议用上面的文件夹导入。</small><input id="fileInput" type="file" accept="video/*,.mp4,.m4v,.mov,.mkv,.webm" multiple hidden /></div>
+        <div id="uploadProgress" class="upload-progress hidden"></div>
+        <div class="list-heading"><strong>视频库 <span id="libraryCount"></span></strong><button id="scanDurations" class="btn btn-ghost btn-sm">浏览器识别未知时长</button></div>
+        <input id="searchVideos" class="search" placeholder="搜索视频名称..." />
+        <div id="libraryList" class="video-library"></div>
+      </section>
+      <section class="card block schedule">
+        <div class="section-heading"><div><h2>③ 编排上午与下午视频</h2><p>先选中场次，再从左侧点击“加入”或拖动视频调整顺序。</p></div></div>
+        <div id="scheduleCards" class="schedule-cards"></div>
+        <div id="editor" class="editor empty-state">选择一个上午或下午场次，开始编排视频。</div>
+      </section>
+    </div>
+    <section class="card block">
+      <div class="section-heading"><div><h2>④ 播放状态与运行记录</h2><p>播放页会定期向这里汇报运行状态。日志是辅助排障记录，不等同于腾讯会议出勤记录。</p></div><button id="refreshAll" class="btn btn-ghost">刷新状态</button></div>
+      <div id="playerDetails" class="soft-block">播放器尚未报告状态。</div>
+      <div id="eventList" class="event-list"></div>
+    </section>
+    <footer>仅默认开放 127.0.0.1 本机访问 · 数据保存在项目下 data 目录 · 课程时长以视频元数据为准</footer>
+  </main>
+  <div id="toast" class="toast hidden" role="status"></div>
+  <script src="/static/admin.js"></script>
+</body></html>

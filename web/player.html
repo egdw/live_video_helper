@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>课程直播</title>
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+
+<body class="player-body">
+    <div class="player-stage" id="stage">
+        <video id="courseVideo" playsinline preload="auto"></video>
+        <div class="player-overlay" id="overlay">
+            <div class="overlay-glow"></div>
+            <div class="overlay-content">
+                <div class="course-emblem">▶</div>
+                <h1 id="mainMessage">直播暂停</h1>
+                <p id="secondaryMessage">当前不在课程播放时段</p>
+            </div>
+        </div>
+        <div id="errorBanner" class="error-banner hidden"></div>
+        <div class="player-bottom"><span id="clock">--:--:--</span></div>
+        <div class="private-controls" id="privateControls"><button id="unlockButton" title="浏览器第一次使用时点击，解锁有声播放">启用声音</button><button id="fullscreenButton" title="进入全屏">全屏</button></div>
+    </div>
+    <script src="/static/player.js"></script>
+</body>
+
+</html>
